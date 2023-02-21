@@ -1,0 +1,50 @@
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+.peakDetails {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+.peakDetails p{
+  font-size: 2em;
+  margin: 0;
+}
+.peakDetails p:nth-child(1){
+  border-bottom:5px solid green;
+}
+.peakDetails p:nth-child(2){
+  font-size: 4em;
+  font-weight: bold;
+  padding: 1rem;
+}
+.peakDetails span {
+  padding-right: 1rem;
+  vertical-align: top;
+}
+
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}
+
+.card {
+  padding: 2em;
+}
+
+.read-the-docs {
+  color: #888;
+}
