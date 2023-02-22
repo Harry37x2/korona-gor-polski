@@ -10,15 +10,16 @@
   grid-template-columns: 1fr 1fr;
   padding: 3rem;
   background-color: #2e2e2e;
+  gap: 2rem;
 }
-.peakDetails p{
+.peakDetails p {
   font-size: 2em;
   margin: 0;
 }
-.peakDetails p:nth-child(1){
-  border-bottom:5px solid green;
+.peakDetails p:nth-child(1) {
+  border-bottom: 5px solid green;
 }
-.peakDetails p:nth-child(2){
+.peakDetails p:nth-child(2) {
   font-size: 4em;
   font-weight: bold;
   padding: 1rem;
@@ -28,8 +29,46 @@
   vertical-align: top;
   display: inline-block;
 }
-.lol {
+
+.peakDetails-right {
   display: flex;
+  flex-direction: column;
+}
+
+/* Tooltip*/
+.tooltip {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 120px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  padding: 5px 0;
+  border-radius: 6px;
+  width: 120px;
+  top: 100%;
+  left: 50%;
+  margin-left: -60px;
+  position: absolute;
+  z-index: 1;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+}
+.tooltip .tooltiptext::after {
+  content: " ";
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent transparent black transparent;
 }
 
 @keyframes logo-spin {
