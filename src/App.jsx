@@ -16,6 +16,11 @@ function App() {
     },
     components: {
       MuiAccordionSummary: {
+        styleOverrides:{
+          root: {
+            paddingBlock: 8,
+          }
+        },
         variants: [
           {
             props: { variant: 'done'},

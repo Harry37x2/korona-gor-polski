@@ -9,8 +9,8 @@
         "longtitude": 0,
         "distance": 3.5,
         "time": "1h50min",
-        "visited": false, 
-        "date": "", 
+        "visited": true, 
+        "date": "12.12.2022", 
         "link": ""
     },
     {

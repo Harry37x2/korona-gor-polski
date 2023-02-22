@@ -8,6 +8,8 @@
 .peakDetails {
   display: grid;
   grid-template-columns: 1fr 1fr;
+  padding: 3rem;
+  background-color: #2e2e2e;
 }
 .peakDetails p{
   font-size: 2em;
@@ -24,6 +26,10 @@
 .peakDetails span {
   padding-right: 1rem;
   vertical-align: top;
+  display: inline-block;
+}
+.lol {
+  display: flex;
 }
 
 @keyframes logo-spin {
