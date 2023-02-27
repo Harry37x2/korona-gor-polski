@@ -5,6 +5,13 @@
   text-align: center;
 }
 
+/* .accTypoFirst {
+  width: 35%;
+  flex-shrink: 0;
+  display: flex;
+  justify-content: flex-start;
+} */
+
 .peakDetails {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -30,7 +37,7 @@
   display: inline-block;
 }
 
-.peakDetails-right {
+.peakDetails-right .wrapper {
   display: flex;
   flex-direction: column;
 }
@@ -50,7 +57,7 @@
   padding: 5px 0;
   border-radius: 6px;
   width: 120px;
-  top: 100%;
+  top: 120%;
   left: 50%;
   margin-left: -60px;
   position: absolute;
