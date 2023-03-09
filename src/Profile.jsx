@@ -24,9 +24,8 @@ const Profile = () => {
         variant="contained"
         aria-label="outlined primary button group"
       >
-        <Button sx={{ m: 1 }}>Email: {currentUser.email}</Button>
-        <Link to="/">
-          <Button sx={{ m: 1 }}>Aktualizuj dane</Button>
+        <Link to="/update-profile">
+          <Button sx={{ m: 1 }}>Konto: {currentUser.email}</Button>
         </Link>
         <Link to="/dashboard">
           <Button sx={{ m: 1 }}>Szczyty</Button>
@@ -35,22 +34,6 @@ const Profile = () => {
           Wyloguj
         </Button>
       </ButtonGroup>
-
-      {/* <Card>
-        <Card.Body>
-          <h2 className="text-center mb-4">Profile</h2>
-          {error && <Alert variant="danger">{error}</Alert>}
-          <strong>Email:</strong>
-          {currentUser.email}
-          <Link to="/userScratches" className="btn btn-danger w-100 mt-3">
-            Go to SCRATCHES
-          </Link>
-          <Link to="/update-profile" className="btn btn-primary w-100 mt-3">
-            Update Profile
-          </Link>
-        </Card.Body>
-      </Card> */}
-      <div className="w-100 text-center mt-2"></div>
     </>
   );
 };

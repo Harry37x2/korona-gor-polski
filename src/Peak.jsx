@@ -16,6 +16,11 @@ import ModeOfTravelIcon from "@mui/icons-material/ModeOfTravel";
 import WhereToVoteIcon from "@mui/icons-material/WhereToVote";
 import DateAndTimePicker from "./DateAndTimePicker";
 
+import { collection } from "@firebase/firestore";
+import { useCollectionData } from "react-firebase-hooks/firestore";
+import { db } from "./firebase";
+import { useAuth } from "./contexts/AuthContext";
+
 const Peak = ({
   peak,
   handleSubmit,
@@ -24,10 +29,15 @@ const Peak = ({
   date,
   dateChangeHandler,
 }) => {
+  const { currentUser } = useAuth();
+  const query = collection(db, "korona-gor-polski", peak.id, currentUser.uid);
+  const [subPeak, loading, error] = useCollectionData(query);
+  console.log(subPeak);
+
   const handleChange = (isExpanded, panel) => {
     setExpanded(isExpanded ? panel : false);
   };
-
+  // console.log(peak);
   const respAccSum = {};
 
   const respAccSumTypo1 = {
@@ -51,7 +61,9 @@ const Peak = ({
         id={`panel-${peak.id}-header`}
         aria-controls={`panel-${peak.id}-content`}
         expandIcon={<ExpandMoreIcon />}
-        variant={`${peak.visited === true ? "done" : "default"}`}
+        variant={`${subPeak?.map((item) =>
+          item.visited === true ? "done" : "default"
+        )}`}
       >
         <Typography sx={respAccSumTypo1}>
           {`${peak.name}`}
@@ -59,14 +71,18 @@ const Peak = ({
           {`${peak.altitude}m n.p.m`}
         </Typography>
         <Typography sx={respAccSumTypo2}>
-          {peak.visited === true ? (
-            <span style={{ display: "flex" }}>
-              <WhereToVoteIcon />
-              {`Zdobyto dnia: ${peak.date}`}
+          {subPeak?.map((item) => (
+            <span key={Math.random()} style={{ display: "flex" }}>
+              {item.visited === true ? (
+                <span>
+                  <WhereToVoteIcon />
+                  {`Zdobyto dnia: ${item.date}`}
+                </span>
+              ) : (
+                ""
+              )}
             </span>
-          ) : (
-            ""
-          )}
+          ))}
         </Typography>
       </AccordionSummary>
       <AccordionDetails>
@@ -96,7 +112,7 @@ const Peak = ({
             </span>
           </div>
           <div className="peakDetails-right">
-            {peak.visited === false ? (
+            {subPeak == 0 ? (
               <Stack spacing={2} alignItems={"center"}>
                 <DateAndTimePicker onChange={dateChangeHandler} date={date} />
                 <Button
@@ -109,9 +125,30 @@ const Peak = ({
                 </Button>
               </Stack>
             ) : (
-              <Button variant="contained" disabled>
-                Zdobyto
-              </Button>
+              subPeak?.map((item) => (
+                <div key={Math.random()}>
+                  {item.visited === false ? (
+                    <Stack spacing={2} alignItems={"center"}>
+                      <DateAndTimePicker
+                        onChange={dateChangeHandler}
+                        date={date}
+                      />
+                      <Button
+                        variant="contained"
+                        onClick={() => {
+                          handleSubmit(peak.id);
+                        }}
+                      >
+                        Zatwierdź
+                      </Button>
+                    </Stack>
+                  ) : (
+                    <Button variant="contained" disabled>
+                      Zdobyto
+                    </Button>
+                  )}
+                </div>
+              ))
             )}
           </div>
         </div>

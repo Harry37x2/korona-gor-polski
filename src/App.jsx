@@ -10,6 +10,7 @@ import Signup from "./Signup";
 import ProtectedRoute from "./ProtectedRoute";
 import ForgotPassword from "./ForgotPassword";
 import Profile from "./Profile";
+import UpdateProfile from "./UpdateProfile";
 
 function App() {
   const theme = createTheme({

@@ -3,57 +3,75 @@ import axios from "axios";
 import Peak from "./Peak";
 import moment from "moment";
 
-const url = "http://localhost:3000/peaks";
+import { useAuth } from "./contexts/AuthContext";
+
+import {
+  query,
+  collection,
+  onSnapshot,
+  updateDoc,
+  doc,
+  setDoc,
+  addDoc,
+} from "@firebase/firestore";
+import { db } from "./firebase";
+
+// const url = "http://localhost:3000/peaks";
 const Dashboard = () => {
   const [peaksList, setPeaksList] = useState([]);
   const [expanded, setExpanded] = useState(false);
   const [date, setDate] = useState(moment());
-  const currentDate = new Date().toLocaleDateString();
-  console.log(currentDate);
+  const [fetchError, setFetchError] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const { currentUser } = useAuth();
 
-  const fetchData = async () => {
+  function fetchData() {
     try {
-      const { data } = await axios(url, {
-        headers: {
-          Accept: "application/json",
-        },
+      const q = query(collection(db, "korona-gor-polski"));
+      const unsubscribe = onSnapshot(q, (querySnapshot) => {
+        let listItems = [];
+        querySnapshot.forEach((peak) => {
+          listItems.push({ ...peak.data(), id: peak.id });
+        });
+        setPeaksList(listItems);
+        // console.log(listItems);
+        setFetchError(null);
       });
-      setPeaksList(data);
-    } catch (error) {
-      console.log(error.response);
+      return () => unsubscribe();
+    } catch (err) {
+      setFetchError(err.message);
+    } finally {
+      setIsLoading(false);
     }
-  };
+  }
 
   const handleSubmit = async (id) => {
-    console.log(id);
+    // console.log(id);
     const submitedList = peaksList.map((item) =>
       item.id === id
         ? { ...item, visited: true, date: date.format("D/MM/YYYY, H:mm") }
         : item
     );
     setPeaksList(submitedList);
-    const elementUrl = `${url}/${id}`;
-    const elementToUpdate = submitedList.filter((item) => item.id === id);
-    const valueToUpdate = {
-      visited: elementToUpdate[0].visited,
-      date: elementToUpdate[0].date,
-    };
-    console.log(valueToUpdate);
-    console.log(date);
 
-    const response = await axios
-      .patch(elementUrl, valueToUpdate)
-      .catch((error) => console.log(error));
-    // console.log(toUpdate[0].visited);
+    const myItem = submitedList.filter((item) => item.id === id);
+    await setDoc(
+      doc(db, "korona-gor-polski", id, currentUser.uid, "userData"),
+      {
+        date: date.format("D/MM/YYYY o: HH:mm"),
+        visited: true,
+      }
+    );
   };
 
   useEffect(() => {
     fetchData();
+    // fetchSubData();
   }, []);
 
   function dateChangeHandler(value) {
     setDate(value);
-    console.log(date.format("D/MM/YYYY, h:mm a"));
+    // console.log(date.format("D/MM/YYYY, hh:mm a"));
   }
 
   return (
@@ -74,3 +92,26 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
+
+// const handleSubmit = async (id) => {
+//   console.log(id);
+//   const submitedList = peaksList.map((item) =>
+//     item.id === id
+//       ? { ...item, visited: true, date: date.format("D/MM/YYYY, H:mm") }
+//       : item
+//   );
+//   setPeaksList(submitedList);
+//   const elementUrl = `${url}/${id}`;
+//   const elementToUpdate = submitedList.filter((item) => item.id === id);
+//   const valueToUpdate = {
+//     visited: elementToUpdate[0].visited,
+//     date: elementToUpdate[0].date,
+//   };
+//   console.log(valueToUpdate);
+//   console.log(date);
+
+//   const response = await axios
+//     .patch(elementUrl, valueToUpdate)
+//     .catch((error) => console.log(error));
+//   // console.log(toUpdate[0].visited);
+// };
