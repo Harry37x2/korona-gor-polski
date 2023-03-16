@@ -28,7 +28,7 @@ const Profile = () => {
           <Button sx={{ m: 1 }}>Konto: {currentUser.email}</Button>
         </Link>
         <Link to="/dashboard">
-          <Button sx={{ m: 1 }}>Szczyty</Button>
+          <Button sx={{ m: 1 }}>Szczyty KGP</Button>
         </Link>
         <Button sx={{ m: 1 }} onClick={handleLogout}>
           Wyloguj

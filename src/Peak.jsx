@@ -15,6 +15,9 @@ import TrendingUpIcon from "@mui/icons-material/TrendingUp";
 import ModeOfTravelIcon from "@mui/icons-material/ModeOfTravel";
 import WhereToVoteIcon from "@mui/icons-material/WhereToVote";
 import DateAndTimePicker from "./DateAndTimePicker";
+import FormGroup from "@mui/material/FormGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Checkbox from "@mui/material/Checkbox";
 
 import { collection } from "@firebase/firestore";
 import { useCollectionData } from "react-firebase-hooks/firestore";
@@ -24,6 +27,7 @@ import { useAuth } from "./contexts/AuthContext";
 const Peak = ({
   peak,
   handleSubmit,
+  handleCheck,
   expanded,
   setExpanded,
   date,
@@ -32,7 +36,7 @@ const Peak = ({
   const { currentUser } = useAuth();
   const query = collection(db, "korona-gor-polski", peak.id, currentUser.uid);
   const [subPeak, loading, error] = useCollectionData(query);
-  console.log(subPeak);
+  // console.log(subPeak);
 
   const handleChange = (isExpanded, panel) => {
     setExpanded(isExpanded ? panel : false);
@@ -48,112 +52,158 @@ const Peak = ({
     justifyContent: "flex-start",
   };
   const respAccSumTypo2 = {};
+  const checkBoxes = {
+    marginLeft: 10,
+  };
 
   return (
-    <Accordion
-      expanded={expanded === `panel${peak.id}`}
-      onChange={(event, isExpanded) =>
-        handleChange(isExpanded, `panel${peak.id}`)
-      }
-    >
-      <AccordionSummary
-        sx={respAccSum}
-        id={`panel-${peak.id}-header`}
-        aria-controls={`panel-${peak.id}-content`}
-        expandIcon={<ExpandMoreIcon />}
-        variant={`${subPeak?.map((item) =>
-          item.visited === true ? "done" : "default"
-        )}`}
+    <div>
+      {/* {loading && "Loading..."} */}
+      <Accordion
+        expanded={expanded === `panel${peak.id}`}
+        onChange={(event, isExpanded) =>
+          handleChange(isExpanded, `panel${peak.id}`)
+        }
       >
-        <Typography sx={respAccSumTypo1}>
-          {`${peak.name}`}
-          <HeightIcon />
-          {`${peak.altitude}m n.p.m`}
-        </Typography>
-        <Typography sx={respAccSumTypo2}>
-          {subPeak?.map((item) => (
-            <span key={Math.random()} style={{ display: "flex" }}>
-              {item.visited === true ? (
-                <span>
-                  <WhereToVoteIcon />
-                  {`Zdobyto dnia: ${item.date}`}
-                </span>
-              ) : (
-                ""
-              )}
-            </span>
-          ))}
-        </Typography>
-      </AccordionSummary>
-      <AccordionDetails>
-        <div className="peakDetails">
-          <div className="peakDetails-left">
-            <p>{`${peak.chain}`}</p>
-            <p>{`${peak.name}`}</p>
+        <AccordionSummary
+          sx={respAccSum}
+          id={`panel-${peak.id}-header`}
+          aria-controls={`panel-${peak.id}-content`}
+          expandIcon={<ExpandMoreIcon />}
+          variant={`${subPeak?.map((item) =>
+            item.visited === true ? "done" : "default"
+          )}`}
+        >
+          <Typography sx={respAccSumTypo1}>
+            {`${peak.name}`}
             <HeightIcon />
-            <span className="tooltip">
-              {`${peak.altitude}m n.p.m`}
-              <span className="tooltiptext">{"wys. bezwzględna"}</span>
-            </span>
-            <TrendingUpIcon />
-            <span className="tooltip">
-              {`${peak.elevation}m`}
-              <span className="tooltiptext">{"suma podejść"}</span>
-            </span>
-            <ModeOfTravelIcon />
-            <span className="tooltip">
-              {`${peak.distance}km`}
-              <span className="tooltiptext">{"dystans"}</span>
-            </span>
-            <TimelapseIcon />
-            <span className="tooltip">
-              {`${peak.time}`}
-              <span className="tooltiptext">{"czas"}</span>
-            </span>
+            {`${peak.altitude}m n.p.m`}
+          </Typography>
+          <Typography sx={respAccSumTypo2}>
+            {subPeak?.map((item) => (
+              <span key={Math.random()} style={{ display: "flex" }}>
+                {item.visited === true ? (
+                  <span>
+                    <WhereToVoteIcon />
+                    {`Zdobyto dnia: ${item.date}`}
+                  </span>
+                ) : (
+                  ""
+                )}
+              </span>
+            ))}
+          </Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <div className="peakDetails">
+            <div className="peakDetails-left">
+              <p>{`${peak.chain}`}</p>
+              <p>{`${peak.name}`}</p>
+              <HeightIcon />
+              <span className="tooltip">
+                {`${peak.altitude}m n.p.m`}
+                <span className="tooltiptext">{"wys. bezwzględna"}</span>
+              </span>
+              <TrendingUpIcon />
+              <span className="tooltip">
+                {`${peak.elevation}m`}
+                <span className="tooltiptext">{"suma podejść"}</span>
+              </span>
+              <ModeOfTravelIcon />
+              <span className="tooltip">
+                {`${peak.distance}km`}
+                <span className="tooltiptext">{"dystans"}</span>
+              </span>
+              <TimelapseIcon />
+              <span className="tooltip">
+                {`${peak.time}`}
+                <span className="tooltiptext">{"czas"}</span>
+              </span>
+            </div>
+            <div className="peakDetails-right">
+              {subPeak == 0 ? (
+                <Stack spacing={2} alignItems={"center"}>
+                  <DateAndTimePicker onChange={dateChangeHandler} date={date} />
+                  <Button
+                    variant="contained"
+                    onClick={() => {
+                      handleSubmit(peak.id);
+                    }}
+                  >
+                    Zatwierdź
+                  </Button>
+                </Stack>
+              ) : (
+                subPeak?.map((item) => (
+                  <div key={Math.random()}>
+                    {item.visited === false ? (
+                      <Stack spacing={2} alignItems={"center"}>
+                        <DateAndTimePicker
+                          onChange={dateChangeHandler}
+                          date={date}
+                        />
+                        <Button
+                          variant="contained"
+                          onClick={() => {
+                            handleSubmit(peak.id);
+                          }}
+                        >
+                          Zatwierdź
+                        </Button>
+                      </Stack>
+                    ) : (
+                      <FormGroup sx={checkBoxes}>
+                        <FormControlLabel
+                          disabled
+                          control={<Checkbox defaultChecked />}
+                          label="Zdobyto"
+                        />
+                        <FormControlLabel
+                          control={
+                            <Checkbox
+                              checked={item.bike}
+                              value="bike"
+                              onChange={(event) =>
+                                handleCheck(event.target.value, peak.id)
+                              }
+                            />
+                          }
+                          label="Na rowerze"
+                        />
+                        <FormControlLabel
+                          control={
+                            <Checkbox
+                              checked={item.night}
+                              value="night"
+                              onChange={(event) =>
+                                handleCheck(event.target.value, peak.id)
+                              }
+                            />
+                          }
+                          label="W nocy"
+                        />
+                        <FormControlLabel
+                          control={
+                            <Checkbox
+                              checked={item.snow}
+                              value="snow"
+                              onChange={(event) =>
+                                handleCheck(event.target.value, peak.id)
+                              }
+                            />
+                          }
+                          label="Po śniegu"
+                        />
+                      </FormGroup>
+                    )}
+                  </div>
+                ))
+              )}
+            </div>
           </div>
-          <div className="peakDetails-right">
-            {subPeak == 0 ? (
-              <Stack spacing={2} alignItems={"center"}>
-                <DateAndTimePicker onChange={dateChangeHandler} date={date} />
-                <Button
-                  variant="contained"
-                  onClick={() => {
-                    handleSubmit(peak.id);
-                  }}
-                >
-                  Zatwierdź
-                </Button>
-              </Stack>
-            ) : (
-              subPeak?.map((item) => (
-                <div key={Math.random()}>
-                  {item.visited === false ? (
-                    <Stack spacing={2} alignItems={"center"}>
-                      <DateAndTimePicker
-                        onChange={dateChangeHandler}
-                        date={date}
-                      />
-                      <Button
-                        variant="contained"
-                        onClick={() => {
-                          handleSubmit(peak.id);
-                        }}
-                      >
-                        Zatwierdź
-                      </Button>
-                    </Stack>
-                  ) : (
-                    <Button variant="contained" disabled>
-                      Zdobyto
-                    </Button>
-                  )}
-                </div>
-              ))
-            )}
-          </div>
-        </div>
-      </AccordionDetails>
-    </Accordion>
+        </AccordionDetails>
+      </Accordion>
+    </div>
   );
 };
 

@@ -46,7 +46,6 @@ const Dashboard = () => {
   }
 
   const handleSubmit = async (id) => {
-    // console.log(id);
     const submitedList = peaksList.map((item) =>
       item.id === id
         ? { ...item, visited: true, date: date.format("D/MM/YYYY, H:mm") }
@@ -64,6 +63,21 @@ const Dashboard = () => {
     );
   };
 
+  const handleCheck = async (value, id) => {
+    const submitedList = peaksList.map((item) =>
+      item.id === id ? { ...item, [value]: !item[value] } : item
+    );
+    setPeaksList(submitedList);
+
+    const myItem = submitedList.filter((item) => item.id === id);
+    await updateDoc(
+      doc(db, "korona-gor-polski", id, currentUser.uid, "userData"),
+      {
+        [value]: myItem[0][value],
+      }
+    );
+  };
+
   useEffect(() => {
     fetchData();
     // fetchSubData();
@@ -76,6 +90,8 @@ const Dashboard = () => {
 
   return (
     <>
+      {isLoading && "Loading..."}
+      {fetchError && "Error"}
       {peaksList.map((peak) => (
         <Peak
           date={date}
@@ -83,6 +99,7 @@ const Dashboard = () => {
           key={peak.id}
           peak={peak}
           handleSubmit={handleSubmit}
+          handleCheck={handleCheck}
           expanded={expanded}
           setExpanded={setExpanded}
         />
