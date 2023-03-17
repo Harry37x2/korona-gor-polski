@@ -6,8 +6,14 @@ import {
   AccordionDetails,
   Typography,
   Button,
-  Stack,
+  Card,
 } from "@mui/material";
+import InfoIcon from "@mui/icons-material/Info";
+import PaidIcon from "@mui/icons-material/Paid";
+import RestaurantIcon from "@mui/icons-material/Restaurant";
+import PetsIcon from "@mui/icons-material/Pets";
+import MilitaryTechIcon from "@mui/icons-material/MilitaryTech";
+import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import HeightIcon from "@mui/icons-material/Height";
 import TimelapseIcon from "@mui/icons-material/Timelapse";
@@ -23,6 +29,12 @@ import { collection } from "@firebase/firestore";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import { db } from "./firebase";
 import { useAuth } from "./contexts/AuthContext";
+
+import Grid from "@mui/material/Unstable_Grid2";
+
+import Stack from "@mui/material/Stack";
+
+import Link from "@mui/material/Link";
 
 const Peak = ({
   peak,
@@ -55,10 +67,75 @@ const Peak = ({
   const checkBoxes = {
     marginLeft: 10,
   };
+  const detailsIcon = {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 1,
+    margin: 1,
+    backgroundColor: "#1E1E1E",
+    width: 100,
+  };
+
+  function Chip({ difflvl }) {
+    if (difflvl === 1) {
+      return (
+        <>
+          <span>Łatwa</span>
+          <FiberManualRecordIcon sx={{ height: 10 }} />
+        </>
+      );
+    } else if (difflvl === 2) {
+      return (
+        <>
+          <span>Średnia</span>
+          <FiberManualRecordIcon sx={{ height: 10 }} />
+          <FiberManualRecordIcon sx={{ height: 10 }} />
+        </>
+      );
+    } else if (difflvl === 3) {
+      return (
+        <Grid>
+          <span>Trudna</span>
+          <FiberManualRecordIcon sx={{ height: 10 }} />
+          <FiberManualRecordIcon sx={{ height: 10 }} />
+          <FiberManualRecordIcon sx={{ height: 10 }} />
+        </Grid>
+      );
+    }
+  }
+
+  // switch (peak.difficulty) {
+  //   case 1:
+  //     return <ExpandMoreIcon />;
+  //     break;
+  //   case 2:
+  //     return (
+  //       <div>
+  //         <ExpandMoreIcon />
+  //         <ExpandMoreIcon />
+  //       </div>
+  //     );
+  //     break;
+  //   case 3:
+  //     return (
+  //       <div>
+  //         <ExpandMoreIcon />
+  //         <ExpandMoreIcon />
+  //         <ExpandMoreIcon />
+  //       </div>
+  //     );
+  //     break;
+
+  //   default:
+  //     "no data";
+  //     break;
+  // }
 
   return (
     <div>
-      {/* {loading && "Loading..."} */}
+      {/* {loading && "Loading..."}  better in dashboard*/}
       <Accordion
         expanded={expanded === `panel${peak.id}`}
         onChange={(event, isExpanded) =>
@@ -94,12 +171,111 @@ const Peak = ({
             ))}
           </Typography>
         </AccordionSummary>
-        <AccordionDetails>
-          <div className="peakDetails">
-            <div className="peakDetails-left">
-              <p>{`${peak.chain}`}</p>
-              <p>{`${peak.name}`}</p>
-              <HeightIcon />
+        <AccordionDetails
+          sx={{
+            backgroundColor: "#242424",
+          }}
+        >
+          {/* <div className="peakDetails"> */}
+          <Grid container>
+            {/* <div className="peakDetails-left"> */}
+            <Grid
+              xs={7}
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                flexDirection: "column",
+                padding: 2,
+              }}
+            >
+              <Typography
+                variant="h4"
+                sx={{
+                  borderBottom: "3px solid green",
+                }}
+              >
+                {`${peak.chain}`}
+              </Typography>
+              <Typography variant="h2">{`${peak.name}`}</Typography>
+              <Chip difflvl={peak.difficulty} />
+
+              <Link href={`${peak.link}`}>
+                <InfoIcon />
+              </Link>
+              <Grid container xs={12} sx={{ justifyContent: "center" }}>
+                <Grid xs={2.5} sx={detailsIcon}>
+                  <ModeOfTravelIcon />
+                  <span className="tooltip">
+                    {`${peak.distance}km`}
+                    <span className="tooltiptext">{"dystans"}</span>
+                  </span>
+                </Grid>
+                <Grid xs={2.5} sx={detailsIcon}>
+                  <TimelapseIcon />
+                  <span className="tooltip">
+                    {`${peak.time}`}
+                    <span className="tooltiptext">{"czas"}</span>
+                  </span>
+                </Grid>
+                <Grid xs={2.5} sx={detailsIcon}>
+                  <TrendingUpIcon />
+                  <span className="tooltip">
+                    {`${peak.elevation}m`}
+                    <span className="tooltiptext">{"suma podejść"}</span>
+                  </span>
+                </Grid>
+                <Grid xs={2.5} sx={detailsIcon}>
+                  <HeightIcon />
+                  <span className="tooltip">
+                    {`${peak.altitude}m n.p.m`}
+                    <span className="tooltiptext">{"wys. bezwzględna"}</span>
+                  </span>
+                </Grid>
+                <Grid xs={2.5} sx={detailsIcon}>
+                  <PaidIcon />
+                  <span className="tooltip">
+                    {`${peak.free === false ? "płatne" : "darmowe"}`}
+                    <span className="tooltiptext">{"wejście"}</span>
+                  </span>
+                </Grid>
+                <Grid xs={2.5} sx={detailsIcon}>
+                  <RestaurantIcon />
+                  <span className="tooltip">
+                    {`${peak.food === false ? "nie" : "tak"}`}
+                    <span className="tooltiptext">{"bufet na trasie"}</span>
+                  </span>
+                </Grid>
+                <Grid xs={2.5} sx={detailsIcon}>
+                  <PetsIcon />
+                  <span className="tooltip">
+                    {`${peak.dog === false ? "nie" : "tak"}`}
+                    <span className="tooltiptext">{"Z psem?"}</span>
+                  </span>
+                </Grid>
+                <Grid xs={2.5} sx={detailsIcon}>
+                  <MilitaryTechIcon />
+                  <span className="tooltip">
+                    {`${peak.got}pkt GOT`}
+                    <span className="tooltiptext">
+                      {"górska odznaka turystyczna"}
+                    </span>
+                  </span>
+                </Grid>
+                {/* <Grid xs={3}>
+                    <Item>zł</Item>
+                  </Grid>
+                  <Grid xs={3}>
+                    <Item>food</Item>
+                  </Grid>
+                  <Grid xs={3}>
+                    <Item>dog</Item>
+                  </Grid>
+                  <Grid xs={3}>
+                    <Item>got</Item>
+                  </Grid> */}
+              </Grid>
+              {/* <HeightIcon />
               <span className="tooltip">
                 {`${peak.altitude}m n.p.m`}
                 <span className="tooltiptext">{"wys. bezwzględna"}</span>
@@ -118,9 +294,20 @@ const Peak = ({
               <span className="tooltip">
                 {`${peak.time}`}
                 <span className="tooltiptext">{"czas"}</span>
-              </span>
-            </div>
-            <div className="peakDetails-right">
+              </span> */}
+              {/* </div> */}
+            </Grid>
+            {/* <div className="peakDetails-right"> */}
+            <Grid
+              xs={5}
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "left",
+                flexDirection: "column",
+                padding: 2,
+              }}
+            >
               {subPeak == 0 ? (
                 <Stack spacing={2} alignItems={"center"}>
                   <DateAndTimePicker onChange={dateChangeHandler} date={date} />
@@ -199,8 +386,10 @@ const Peak = ({
                   </div>
                 ))
               )}
-            </div>
-          </div>
+            </Grid>
+            {/* </div> */}
+            {/* </div> */}
+          </Grid>
         </AccordionDetails>
       </Accordion>
     </div>

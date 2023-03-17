@@ -12,6 +12,8 @@ import ForgotPassword from "./ForgotPassword";
 import Profile from "./Profile";
 import UpdateProfile from "./UpdateProfile";
 
+import Grid from "@mui/material/Unstable_Grid2";
+
 function App() {
   const theme = createTheme({
     palette: {
@@ -48,32 +50,42 @@ function App() {
 
   return (
     <ThemeProvider theme={theme}>
-      <div className="app">
-        <Routes>
-          <Route path="/" element={<Login />} />
-          <Route path="/dashboard" element={<SharedLayout />}>
+      <Grid
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          flexDirection: "column",
+          margin: 20,
+        }}
+      >
+        <div className="app">
+          <Routes>
+            <Route path="/" element={<Login />} />
+            <Route path="/dashboard" element={<SharedLayout />}>
+              <Route
+                index
+                element={
+                  <ProtectedRoute>
+                    <Dashboard />
+                  </ProtectedRoute>
+                }
+              />
+            </Route>
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/profile" element={<Profile />} />
             <Route
-              index
+              path="/update-profile"
               element={
                 <ProtectedRoute>
-                  <Dashboard />
+                  <UpdateProfile />
                 </ProtectedRoute>
               }
             />
-          </Route>
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/forgot-password" element={<ForgotPassword />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route
-            path="/update-profile"
-            element={
-              <ProtectedRoute>
-                <UpdateProfile />
-              </ProtectedRoute>
-            }
-          />
-        </Routes>
-      </div>
+          </Routes>
+        </div>
+      </Grid>
     </ThemeProvider>
   );
 }
