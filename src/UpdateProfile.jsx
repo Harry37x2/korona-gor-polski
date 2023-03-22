@@ -116,6 +116,17 @@ const UpdateProfile = () => {
             >
               Update
             </Button>
+            <Link to="/profile" variant="body2">
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                sx={{ mb: 2 }}
+                disabled={loading}
+              >
+                Back
+              </Button>
+            </Link>
           </Box>
         </Box>
         {/* <Copyright sx={{ mt: 8, mb: 4 }} /> */}

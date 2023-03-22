@@ -7,6 +7,7 @@ import {
   Typography,
   Button,
   Card,
+  Divider,
 } from "@mui/material";
 import InfoIcon from "@mui/icons-material/Info";
 import PaidIcon from "@mui/icons-material/Paid";
@@ -54,18 +55,46 @@ const Peak = ({
     setExpanded(isExpanded ? panel : false);
   };
   // console.log(peak);
-  const respAccSum = {};
+  const respAccSum = {
+    // display: "flex",
+    // justifyContent: "space-between",
+  };
 
-  const respAccSumTypo1 = {
-    width: { sm: "50%", md: "35%" },
+  const respAccSumTypoLeft = {
+    width: { xs: "100%", md: "40%", lg: "35%" },
     flexShrink: 0,
     display: "flex",
     flexDirection: "row",
     justifyContent: "flex-start",
   };
-  const respAccSumTypo2 = {};
+  const respAccSumTypoRight = {
+    display: { xs: "none", md: "flex", lg: "flex" },
+  };
+  const accDetailsContainer = {
+    display: { lg: "flex" },
+    justifyContent: { xs: "center" },
+    alignItems: { xs: "center" },
+    flexDirection: { xs: "column", md: "row", lg: "row" },
+    // padding: 2,
+  };
+  const accDetailsLeft = {
+    width: { md: "100%", lg: "45%" },
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    flexDirection: "column",
+    padding: 2,
+  };
+  const accDetailsRight = {
+    width: { md: "100%", lg: "45%" },
+    display: "flex",
+    justifyContent: { xs: "center", md: "left", lg: "left" },
+    alignItems: { xs: "center", md: "left", lg: "left" },
+    flexDirection: "column",
+    padding: 2,
+  };
   const checkBoxes = {
-    marginLeft: 10,
+    marginLeft: 0,
   };
   const detailsIcon = {
     display: "flex",
@@ -151,12 +180,12 @@ const Peak = ({
             item.visited === true ? "done" : "default"
           )}`}
         >
-          <Typography sx={respAccSumTypo1}>
+          <Typography sx={respAccSumTypoLeft}>
             {`${peak.name}`}
             <HeightIcon />
             {`${peak.altitude}m n.p.m`}
           </Typography>
-          <Typography sx={respAccSumTypo2}>
+          <Typography sx={respAccSumTypoRight}>
             {subPeak?.map((item) => (
               <span key={Math.random()} style={{ display: "flex" }}>
                 {item.visited === true ? (
@@ -176,19 +205,8 @@ const Peak = ({
             backgroundColor: "#242424",
           }}
         >
-          {/* <div className="peakDetails"> */}
-          <Grid container>
-            {/* <div className="peakDetails-left"> */}
-            <Grid
-              xs={7}
-              sx={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                flexDirection: "column",
-                padding: 2,
-              }}
-            >
+          <Grid container sx={accDetailsContainer}>
+            <Grid sx={accDetailsLeft}>
               <Typography
                 variant="h4"
                 sx={{
@@ -203,6 +221,7 @@ const Peak = ({
               <Link href={`${peak.link}`}>
                 <InfoIcon />
               </Link>
+
               <Grid container xs={12} sx={{ justifyContent: "center" }}>
                 <Grid xs={2.5} sx={detailsIcon}>
                   <ModeOfTravelIcon />
@@ -262,52 +281,10 @@ const Peak = ({
                     </span>
                   </span>
                 </Grid>
-                {/* <Grid xs={3}>
-                    <Item>zł</Item>
-                  </Grid>
-                  <Grid xs={3}>
-                    <Item>food</Item>
-                  </Grid>
-                  <Grid xs={3}>
-                    <Item>dog</Item>
-                  </Grid>
-                  <Grid xs={3}>
-                    <Item>got</Item>
-                  </Grid> */}
               </Grid>
-              {/* <HeightIcon />
-              <span className="tooltip">
-                {`${peak.altitude}m n.p.m`}
-                <span className="tooltiptext">{"wys. bezwzględna"}</span>
-              </span>
-              <TrendingUpIcon />
-              <span className="tooltip">
-                {`${peak.elevation}m`}
-                <span className="tooltiptext">{"suma podejść"}</span>
-              </span>
-              <ModeOfTravelIcon />
-              <span className="tooltip">
-                {`${peak.distance}km`}
-                <span className="tooltiptext">{"dystans"}</span>
-              </span>
-              <TimelapseIcon />
-              <span className="tooltip">
-                {`${peak.time}`}
-                <span className="tooltiptext">{"czas"}</span>
-              </span> */}
-              {/* </div> */}
             </Grid>
-            {/* <div className="peakDetails-right"> */}
-            <Grid
-              xs={5}
-              sx={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "left",
-                flexDirection: "column",
-                padding: 2,
-              }}
-            >
+
+            <Grid sx={accDetailsRight}>
               {subPeak == 0 ? (
                 <Stack spacing={2} alignItems={"center"}>
                   <DateAndTimePicker onChange={dateChangeHandler} date={date} />
