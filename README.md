@@ -14,4 +14,3 @@ It will be saved in Firebase subclass with user uid.</p>
 In the near future would like to create:<br/>
 
 - user dashboard with statistics<br/>
-- achievements<br/>
