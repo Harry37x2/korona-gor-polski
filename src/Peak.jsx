@@ -6,8 +6,6 @@ import {
   AccordionDetails,
   Typography,
   Button,
-  Card,
-  Divider,
 } from "@mui/material";
 import InfoIcon from "@mui/icons-material/Info";
 import PaidIcon from "@mui/icons-material/Paid";
@@ -61,14 +59,15 @@ const Peak = ({
   };
 
   const respAccSumTypoLeft = {
-    width: { xs: "100%", md: "40%", lg: "35%" },
+    width: { xs: "100%", md: "50%", lg: "25%" },
     flexShrink: 0,
     display: "flex",
     flexDirection: "row",
-    justifyContent: "flex-start",
+    justifyContent: "space-between",
   };
   const respAccSumTypoRight = {
     display: { xs: "none", md: "flex", lg: "flex" },
+    marginLeft: "5%",
   };
   const accDetailsContainer = {
     display: { lg: "flex" },
@@ -83,6 +82,7 @@ const Peak = ({
     justifyContent: "center",
     alignItems: "center",
     flexDirection: "column",
+    flexGrow: 1,
     padding: 2,
   };
   const accDetailsRight = {
@@ -107,61 +107,39 @@ const Peak = ({
     width: 100,
   };
 
-  function Chip({ difflvl }) {
+  function Item({ difflvl }) {
     if (difflvl === 1) {
       return (
         <>
           <span>Łatwa</span>
-          <FiberManualRecordIcon sx={{ height: 10 }} />
+          <span>
+            <FiberManualRecordIcon sx={{ height: 10 }} />
+          </span>
         </>
       );
     } else if (difflvl === 2) {
       return (
         <>
           <span>Średnia</span>
-          <FiberManualRecordIcon sx={{ height: 10 }} />
-          <FiberManualRecordIcon sx={{ height: 10 }} />
+          <span>
+            <FiberManualRecordIcon sx={{ height: 10 }} />
+            <FiberManualRecordIcon sx={{ height: 10 }} />
+          </span>
         </>
       );
     } else if (difflvl === 3) {
       return (
-        <Grid>
+        <>
           <span>Trudna</span>
-          <FiberManualRecordIcon sx={{ height: 10 }} />
-          <FiberManualRecordIcon sx={{ height: 10 }} />
-          <FiberManualRecordIcon sx={{ height: 10 }} />
-        </Grid>
+          <span>
+            <FiberManualRecordIcon sx={{ height: 10 }} />
+            <FiberManualRecordIcon sx={{ height: 10 }} />
+            <FiberManualRecordIcon sx={{ height: 10 }} />
+          </span>
+        </>
       );
     }
   }
-
-  // switch (peak.difficulty) {
-  //   case 1:
-  //     return <ExpandMoreIcon />;
-  //     break;
-  //   case 2:
-  //     return (
-  //       <div>
-  //         <ExpandMoreIcon />
-  //         <ExpandMoreIcon />
-  //       </div>
-  //     );
-  //     break;
-  //   case 3:
-  //     return (
-  //       <div>
-  //         <ExpandMoreIcon />
-  //         <ExpandMoreIcon />
-  //         <ExpandMoreIcon />
-  //       </div>
-  //     );
-  //     break;
-
-  //   default:
-  //     "no data";
-  //     break;
-  // }
-
   return (
     <div>
       {/* {loading && "Loading..."}  better in dashboard*/}
@@ -182,8 +160,10 @@ const Peak = ({
         >
           <Typography sx={respAccSumTypoLeft}>
             {`${peak.name}`}
-            <HeightIcon />
-            {`${peak.altitude}m n.p.m`}
+            <span>
+              <HeightIcon />
+              {`${peak.altitude}m n.p.m`}
+            </span>
           </Typography>
           <Typography sx={respAccSumTypoRight}>
             {subPeak?.map((item) => (
@@ -215,12 +195,18 @@ const Peak = ({
               >
                 {`${peak.chain}`}
               </Typography>
-              <Typography variant="h2">{`${peak.name}`}</Typography>
-              <Chip difflvl={peak.difficulty} />
-
-              <Link href={`${peak.link}`}>
+              <Typography
+                sx={{ margin: 1 }}
+                variant="h2"
+              >{`${peak.name}`}</Typography>
+              <Link sx={{ margin: 1 }} href={`${peak.link}`}>
                 <InfoIcon />
               </Link>
+              <Item difflvl={peak.difficulty} />
+
+              {/* <Link href={`${peak.link}`}>
+                <InfoIcon />
+              </Link> */}
 
               <Grid container xs={12} sx={{ justifyContent: "center" }}>
                 <Grid xs={2.5} sx={detailsIcon}>
