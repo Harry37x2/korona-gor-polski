@@ -1,22 +1,15 @@
 import React from "react";
-import { Button, ButtonGroup } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Box } from "@mui/material";
+
+import logo from "../src/img/logo.png"
 
 const Header = () => {
   return (
     <>
-      <div>
-        <h1>Korona Gór Polski</h1>
-      </div>
-      <ButtonGroup
-        sx={{ mb: 4 }}
-        variant="contained"
-        aria-label="outlined primary button group"
-      >
-        <Link to="/profile">
-          <Button>Konto</Button>
-        </Link>
-      </ButtonGroup>
+      <Box sx={{display: 'flex', flexDirection: 'column', justifyContent:'center', alignItems: 'center'}}>
+        <div><img src={logo} alt="logo" width={'300px'} /></div>
+        <div><h1>Korona Gór Polski</h1></div>
+      </Box>      
     </>
   );
 };

@@ -1,5 +1,4 @@
 import React from "react";
-import { useState } from "react";
 import {
   Accordion,
   AccordionSummary,
@@ -28,7 +27,6 @@ import { collection } from "@firebase/firestore";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import { db } from "./firebase";
 import { useAuth } from "./contexts/AuthContext";
-import { orderBy, limit } from "firebase/firestore";
 
 import Grid from "@mui/material/Unstable_Grid2";
 
@@ -48,7 +46,6 @@ const Peak = ({
   const { currentUser } = useAuth();
   const query = collection(db, "korona-gor-polski", peak.id, currentUser.uid);
   const [subPeak, loading, error] = useCollectionData(query);
-  console.log(subPeak);
 
   const handleChange = (isExpanded, panel) => {
     setExpanded(isExpanded ? panel : false);
@@ -145,6 +142,7 @@ const Peak = ({
     <div>
       {/* {loading && "Loading..."}  better in dashboard*/}
       <Accordion
+        sx={{mb:2}}
         expanded={expanded === `panel${peak.id}`}
         onChange={(event, isExpanded) =>
           handleChange(isExpanded, `panel${peak.id}`)

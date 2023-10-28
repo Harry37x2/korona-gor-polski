@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "./contexts/AuthContext";
 import { ButtonGroup, Button } from "@mui/material";
+import Header from "./Header";
+
 
 const Profile = () => {
   const [error, setError] = useState("");
@@ -20,6 +22,7 @@ const Profile = () => {
 
   return (
     <>
+    <Header />
       <ButtonGroup
         variant="contained"
         aria-label="outlined primary button group"
@@ -29,6 +32,9 @@ const Profile = () => {
         </Link>
         <Link to="/dashboard">
           <Button sx={{ m: 1 }}>Szczyty KGP</Button>
+        </Link>
+        <Link to="/profile">
+          <Button sx={{ m: 1 }}>Szczyty Diadem</Button>
         </Link>
         <Button sx={{ m: 1 }} onClick={handleLogout}>
           Wyloguj

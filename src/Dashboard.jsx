@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import { Button, ButtonGroup } from "@mui/material";
+import { Link } from "react-router-dom";
 import Peak from "./Peak";
 import moment from "moment";
 
@@ -88,8 +89,22 @@ const Dashboard = () => {
     // console.log(date.format("D/MM/YYYY, hh:mm a"));
   }
 
+  for (let i=0; i<peaksList.length; i++) {
+    console.log(peaksList[i].altitude)
+    peaksList.sort((a,b)=>a.altitude - b.altitude)
+  }
+
   return (
     <>
+      <ButtonGroup
+        sx={{ mb: 4 }}
+        variant="contained"
+        aria-label="outlined primary button group"
+      >
+        <Link to="/profile">
+          <Button>Konto</Button>
+        </Link>
+      </ButtonGroup>
       {isLoading && "Loading..."}
       {fetchError && "Error"}
       {peaksList.map((peak) => (

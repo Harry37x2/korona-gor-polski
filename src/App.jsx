@@ -6,6 +6,7 @@ import { createTheme } from "@mui/material/styles";
 import { green } from "@mui/material/colors";
 import { ThemeProvider } from "@emotion/react";
 import Login from "./Login";
+import Welcome from "./Welcome";
 import Signup from "./Signup";
 import ProtectedRoute from "./ProtectedRoute";
 import ForgotPassword from "./ForgotPassword";
@@ -61,7 +62,7 @@ function App() {
       >
         <div className="app">
           <Routes>
-            <Route path="/" element={<Login />} />
+            <Route path="/" element={<Welcome />} />
             <Route path="/dashboard" element={<SharedLayout />}>
               <Route
                 index
@@ -73,6 +74,7 @@ function App() {
               />
             </Route>
             <Route path="/signup" element={<Signup />} />
+            <Route path="/login" element={<Login />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/profile" element={<Profile />} />
             <Route

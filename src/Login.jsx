@@ -66,7 +66,7 @@ const Login = () => {
               required
               fullWidth
               id="email"
-              label="Email Address"
+              label="Email (11@11.pl)"
               name="email"
               autoComplete="email"
               autoFocus
@@ -76,7 +76,7 @@ const Login = () => {
               required
               fullWidth
               name="password"
-              label="Password"
+              label="Password (123456)"
               type="password"
               id="password"
               autoComplete="current-password"
