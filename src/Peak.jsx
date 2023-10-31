@@ -57,7 +57,7 @@ const Peak = ({
   };
 
   const respAccSumTypoLeft = {
-    width: { xs: "100%", md: "50%", lg: "25%" },
+    width: { xs: "100%", md: "50%", lg: "30%" },
     flexShrink: 0,
     display: "flex",
     flexDirection: "row",
@@ -140,7 +140,6 @@ const Peak = ({
   }
   return (
     <div>
-      {/* {loading && "Loading..."}  better in dashboard*/}
       <Accordion
         sx={{mb:2}}
         expanded={expanded === `panel${peak.id}`}
@@ -160,16 +159,19 @@ const Peak = ({
           <Typography sx={respAccSumTypoLeft}>
             {`${peak.name}`}
             <span>
-              <HeightIcon />
+              <HeightIcon sx={{verticalAlign: 'bottom'}} />
               {`${peak.altitude}m n.p.m`}
             </span>
+            {/* {`${peak.name}`}
+              <HeightIcon sx={{verticalAlign: 'bottom'}} />
+              {`${peak.altitude}m n.p.m`} */}
           </Typography>
           <Typography sx={respAccSumTypoRight}>
             {subPeak?.map((item) => (
               <span key={Math.random()} style={{ display: "flex" }}>
                 {item.visited === true ? (
                   <span>
-                    <WhereToVoteIcon />
+                    <WhereToVoteIcon sx={{verticalAlign: 'bottom'}}  />
                     {`Zdobyto dnia: ${item.date}`}
                   </span>
                 ) : (

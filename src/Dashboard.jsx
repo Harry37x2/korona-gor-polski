@@ -3,6 +3,7 @@ import { Button, ButtonGroup } from "@mui/material";
 import { Link } from "react-router-dom";
 import Peak from "./Peak";
 import moment from "moment";
+import LinearProgress from '@mui/material/LinearProgress';
 
 import { useAuth } from "./contexts/AuthContext";
 
@@ -34,15 +35,19 @@ const Dashboard = () => {
         querySnapshot.forEach((peak) => {
           listItems.push({ ...peak.data(), id: peak.id });
         });
-        setPeaksList(listItems);
-        // console.log(listItems);
-        setFetchError(null);
+        setTimeout(()=>{
+          setPeaksList(listItems);
+          setFetchError(null);
+        },1500)
+        
       });
       return () => unsubscribe();
     } catch (err) {
       setFetchError(err.message);
     } finally {
-      setIsLoading(false);
+      setTimeout(()=>{
+        setIsLoading(false);
+      },1500)
     }
   }
 
@@ -90,7 +95,6 @@ const Dashboard = () => {
   }
 
   for (let i=0; i<peaksList.length; i++) {
-    console.log(peaksList[i].altitude)
     peaksList.sort((a,b)=>a.altitude - b.altitude)
   }
 
@@ -105,7 +109,7 @@ const Dashboard = () => {
           <Button>Konto</Button>
         </Link>
       </ButtonGroup>
-      {isLoading && "Loading..."}
+      {isLoading && <LinearProgress />}
       {fetchError && "Error"}
       {peaksList.map((peak) => (
         <Peak
