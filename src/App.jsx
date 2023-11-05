@@ -1,7 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 import "./App.css";
 import SharedLayout from "./SharedLayout";
-import Dashboard from "./Dashboard";
+import KGPpeaks from "./KGPpeaks";
 import { createTheme } from "@mui/material/styles";
 import { green } from "@mui/material/colors";
 import { ThemeProvider } from "@emotion/react";
@@ -63,12 +63,12 @@ function App() {
         <div className="app">
           <Routes>
             <Route path="/" element={<Welcome />} />
-            <Route path="/dashboard" element={<SharedLayout />}>
+            <Route path="/KGPpeaks" element={<SharedLayout />}>
               <Route
                 index
                 element={
                   <ProtectedRoute>
-                    <Dashboard />
+                    <KGPpeaks />
                   </ProtectedRoute>
                 }
               />

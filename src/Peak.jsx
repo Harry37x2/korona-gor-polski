@@ -1,4 +1,5 @@
 import React from "react";
+
 import {
   Accordion,
   AccordionSummary,
@@ -17,22 +18,20 @@ import HeightIcon from "@mui/icons-material/Height";
 import TimelapseIcon from "@mui/icons-material/Timelapse";
 import TrendingUpIcon from "@mui/icons-material/TrendingUp";
 import ModeOfTravelIcon from "@mui/icons-material/ModeOfTravel";
-import WhereToVoteIcon from "@mui/icons-material/WhereToVote";
 import DateAndTimePicker from "./DateAndTimePicker";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+
+import Grid from "@mui/material/Unstable_Grid2";
+import Stack from "@mui/material/Stack";
+import Link from "@mui/material/Link";
 
 import { collection } from "@firebase/firestore";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import { db } from "./firebase";
 import { useAuth } from "./contexts/AuthContext";
-
-import Grid from "@mui/material/Unstable_Grid2";
-
-import Stack from "@mui/material/Stack";
-
-import Link from "@mui/material/Link";
 
 const Peak = ({
   peak,
@@ -50,11 +49,7 @@ const Peak = ({
   const handleChange = (isExpanded, panel) => {
     setExpanded(isExpanded ? panel : false);
   };
-  // console.log(peak);
-  const respAccSum = {
-    // display: "flex",
-    // justifyContent: "space-between",
-  };
+
 
   const respAccSumTypoLeft = {
     width: { xs: "100%", md: "50%", lg: "30%" },
@@ -148,7 +143,6 @@ const Peak = ({
         }
       >
         <AccordionSummary
-          sx={respAccSum}
           id={`panel-${peak.id}-header`}
           aria-controls={`panel-${peak.id}-content`}
           expandIcon={<ExpandMoreIcon />}
@@ -171,7 +165,7 @@ const Peak = ({
               <span key={Math.random()} style={{ display: "flex" }}>
                 {item.visited === true ? (
                   <span>
-                    <WhereToVoteIcon sx={{verticalAlign: 'bottom'}}  />
+                    <CheckCircleIcon sx={{verticalAlign: 'bottom', paddingRight: '.25rem'}}  />
                     {`Zdobyto dnia: ${item.date}`}
                   </span>
                 ) : (

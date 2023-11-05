@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "./contexts/AuthContext";
 import { ButtonGroup, Button } from "@mui/material";
 import Header from "./Header";
+import Dashboard from "./Dashboard";
 
 
 const Profile = () => {
@@ -30,7 +31,7 @@ const Profile = () => {
         <Link to="/update-profile">
           <Button sx={{ m: 1 }}>Konto: {currentUser.email}</Button>
         </Link>
-        <Link to="/dashboard">
+        <Link to="/KGPpeaks">
           <Button sx={{ m: 1 }}>Szczyty KGP</Button>
         </Link>
         <Link to="/profile">
@@ -40,6 +41,7 @@ const Profile = () => {
           Wyloguj
         </Button>
       </ButtonGroup>
+      <Dashboard />
     </>
   );
 };

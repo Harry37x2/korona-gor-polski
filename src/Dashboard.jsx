@@ -1,153 +1,75 @@
-import React, { useEffect, useState } from "react";
-import { Button, ButtonGroup } from "@mui/material";
-import { Link } from "react-router-dom";
-import Peak from "./Peak";
-import moment from "moment";
-import LinearProgress from '@mui/material/LinearProgress';
-
-import { useAuth } from "./contexts/AuthContext";
+import React, {useEffect, useState} from 'react'
 
 import {
   query,
   collection,
+  collectionGroup,
+  where,
   onSnapshot,
   updateDoc,
   doc,
   setDoc,
   addDoc,
+  getDocs
 } from "@firebase/firestore";
 import { db } from "./firebase";
+import { useCollectionData } from "react-firebase-hooks/firestore";
 
-// const url = "http://localhost:3000/peaks";
+import { useAuth } from "./contexts/AuthContext";
+import { useFetch } from './hooks/useFetch';
+
 const Dashboard = () => {
-  const [peaksList, setPeaksList] = useState([]);
-  const [expanded, setExpanded] = useState(false);
-  const [date, setDate] = useState(moment());
-  const [fetchError, setFetchError] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const { currentUser } = useAuth();
+    const { currentUser } = useAuth();
 
-  function fetchData() {
-    try {
-      const q = query(collection(db, "korona-gor-polski"));
-      const unsubscribe = onSnapshot(q, (querySnapshot) => {
-        let listItems = [];
-        querySnapshot.forEach((peak) => {
-          listItems.push({ ...peak.data(), id: peak.id });
-        });
-        setTimeout(()=>{
-          setPeaksList(listItems);
-          setFetchError(null);
-        },1500)
-        
+    const {
+        fetchedData: peaksList, 
+        setFetchedData: setPeaksList,
+        fetchError,
+        setFetchError,
+        isLoading,
+        setIsLoading
+    } = useFetch([]);    
+
+    // console.log(peaksList)
+    let querySnapshot
+
+    async function get() {
+      const museums = query(collectionGroup(db, 's9I5S0H4DjcApNZDtpVqdW0dNCi1'), where('visited', '==', 'true'));
+      querySnapshot = await getDocs(museums);
+      
+      console.log(querySnapshot)
+      querySnapshot.forEach((doc) => {
+        console.log(doc.visited);
       });
-      return () => unsubscribe();
-    } catch (err) {
-      setFetchError(err.message);
-    } finally {
-      setTimeout(()=>{
-        setIsLoading(false);
-      },1500)
     }
-  }
+    get()
+    
 
-  const handleSubmit = async (id) => {
-    const submitedList = peaksList.map((item) =>
-      item.id === id
-        ? { ...item, visited: true, date: date.format("D/MM/YYYY, H:mm") }
-        : item
-    );
-    setPeaksList(submitedList);
+  //   let docs
+  // async function getIt() {
+  //   docs = await getDocs(collectionGroup(db, "name"));
+  //   getIt()
+  // }
+  // console.log(docs)
 
-    const myItem = submitedList.filter((item) => item.id === id);
-    await setDoc(
-      doc(db, "korona-gor-polski", id, currentUser.uid, "userData"),
-      {
-        date: date.format("D/MM/YYYY o: HH:mm"),
-        visited: true,
-      }
-    );
-  };
+      // const arr = [{got:1, visited: 'ok'}, {got:9, visited: 'ok'}]
+      // let sum = 0
+      // for(let i = 0; i<arr.length; i++){
+      //   if (arr[i].visited === 'ok'){
+      //       sum += arr[i].got
+      //   }
+      // }
+      // console.log(sum)
 
-  const handleCheck = async (value, id) => {
-    const submitedList = peaksList.map((item) =>
-      item.id === id ? { ...item, [value]: !item[value] } : item
-    );
-    setPeaksList(submitedList);
-
-    const myItem = submitedList.filter((item) => item.id === id);
-    await updateDoc(
-      doc(db, "korona-gor-polski", id, currentUser.uid, "userData"),
-      {
-        [value]: myItem[0][value],
-      }
-    );
-  };
-
-  useEffect(() => {
-    fetchData();
-    // fetchSubData();
-  }, []);
-
-  function dateChangeHandler(value) {
-    setDate(value);
-    // console.log(date.format("D/MM/YYYY, hh:mm a"));
-  }
-
-  for (let i=0; i<peaksList.length; i++) {
-    peaksList.sort((a,b)=>a.altitude - b.altitude)
-  }
+    //   let sumGot = 0
+    //     sumGot = peaksList.reduce((acc, cur) => ({got: acc.got + cur.got}))
+    //   console.log(sumGot)
 
   return (
-    <>
-      <ButtonGroup
-        sx={{ mb: 4 }}
-        variant="contained"
-        aria-label="outlined primary button group"
-      >
-        <Link to="/profile">
-          <Button>Konto</Button>
-        </Link>
-      </ButtonGroup>
-      {isLoading && <LinearProgress />}
-      {fetchError && "Error"}
-      {peaksList.map((peak) => (
-        <Peak
-          date={date}
-          dateChangeHandler={dateChangeHandler}
-          key={peak.id}
-          peak={peak}
-          handleSubmit={handleSubmit}
-          handleCheck={handleCheck}
-          expanded={expanded}
-          setExpanded={setExpanded}
-        />
-      ))}
-    </>
-  );
-};
+    <div>
+      {querySnapshot}
+    </div>
+  )
+}
 
-export default Dashboard;
-
-// const handleSubmit = async (id) => {
-//   console.log(id);
-//   const submitedList = peaksList.map((item) =>
-//     item.id === id
-//       ? { ...item, visited: true, date: date.format("D/MM/YYYY, H:mm") }
-//       : item
-//   );
-//   setPeaksList(submitedList);
-//   const elementUrl = `${url}/${id}`;
-//   const elementToUpdate = submitedList.filter((item) => item.id === id);
-//   const valueToUpdate = {
-//     visited: elementToUpdate[0].visited,
-//     date: elementToUpdate[0].date,
-//   };
-//   console.log(valueToUpdate);
-//   console.log(date);
-
-//   const response = await axios
-//     .patch(elementUrl, valueToUpdate)
-//     .catch((error) => console.log(error));
-//   // console.log(toUpdate[0].visited);
-// };
+export default Dashboard
