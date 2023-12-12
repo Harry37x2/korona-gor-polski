@@ -12,23 +12,23 @@ import {
   addDoc,
   getDocs
 } from "@firebase/firestore";
-import { db } from "./firebase";
+import { db } from "../firebase";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 
-import { useAuth } from "./contexts/AuthContext";
-import { useFetch } from './hooks/useFetch';
+import { useAuth } from "../contexts/AuthContext";
+// import { useFetch } from '../contexts/DataContext';
 
 const Dashboard = () => {
     const { currentUser } = useAuth();
 
-    const {
-        fetchedData: peaksList, 
-        setFetchedData: setPeaksList,
-        fetchError,
-        setFetchError,
-        isLoading,
-        setIsLoading
-    } = useFetch([]);    
+    // const {
+    //     fetchedData: peaksList, 
+    //     setFetchedData: setPeaksList,
+    //     fetchError,
+    //     setFetchError,
+    //     isLoading,
+    //     setIsLoading
+    // } = useFetch([]);    
 
     // console.log(peaksList)
     let querySnapshot

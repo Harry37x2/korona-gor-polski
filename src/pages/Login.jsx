@@ -4,7 +4,6 @@ import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
-// import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
@@ -12,20 +11,18 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { Alert } from "@mui/material";
 
-import React, { useState } from "react";
-import { useAuth } from "./contexts/AuthContext";
+import React from "react";
+import { useAuth } from "../contexts/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
 
 const Login = () => {
-  const { login, currentUser } = useAuth();
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
+  const { login, error, setError, loading, setLoading, currentUser } = useAuth();
   const navigate = useNavigate();
 
   async function handleSubmit(e) {
     e.preventDefault();
     try {
-      setError("");
+      setError(false);
       setLoading(true);
       const data = new FormData(e.currentTarget);
       await login(data.get("email"), data.get("password"));

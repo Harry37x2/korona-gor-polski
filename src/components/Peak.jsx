@@ -18,7 +18,7 @@ import HeightIcon from "@mui/icons-material/Height";
 import TimelapseIcon from "@mui/icons-material/Timelapse";
 import TrendingUpIcon from "@mui/icons-material/TrendingUp";
 import ModeOfTravelIcon from "@mui/icons-material/ModeOfTravel";
-import DateAndTimePicker from "./DateAndTimePicker";
+import DateAndTimePicker from "./ui/DateAndTimePicker";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
@@ -30,8 +30,8 @@ import Link from "@mui/material/Link";
 
 import { collection } from "@firebase/firestore";
 import { useCollectionData } from "react-firebase-hooks/firestore";
-import { db } from "./firebase";
-import { useAuth } from "./contexts/AuthContext";
+import { db } from "../firebase";
+import { useAuth } from "../contexts/AuthContext";
 
 const Peak = ({
   peak,

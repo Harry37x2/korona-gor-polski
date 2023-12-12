@@ -9,27 +9,27 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { Alert } from "@mui/material";
 
-import React, { useState } from "react";
-import { useAuth } from "./contexts/AuthContext";
-import { Link } from "react-router-dom";
+import React from "react";
+import { useAuth } from "../contexts/AuthContext";
+import { Link, useNavigate } from "react-router-dom";
 
-const Login = () => {
-  const { resetPassword } = useAuth();
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState("");
+const Signup = () => {
+  const { signup, error, setError, loading, setLoading } = useAuth();
+  const navigate = useNavigate();
 
   async function handleSubmit(e) {
     e.preventDefault();
+    const data = new FormData(e.currentTarget);
+    if (data.get("password") !== data.get("confirm-password")) {
+      return setError("password not match");
+    }
     try {
-      setMessage("");
       setError("");
       setLoading(true);
-      const data = new FormData(e.currentTarget);
-      await resetPassword(data.get("email"));
-      setMessage("Check you inbox for more info.");
+      await signup(data.get("email"), data.get("password"));
+      navigate("/profile");
     } catch {
-      setError("Failed to log in.");
+      setError("Failed to sign up.");
     }
     setLoading(false);
   }
@@ -37,7 +37,6 @@ const Login = () => {
   return (
     <>
       {error && <Alert severity="error">{error}</Alert>}
-      {message && <Alert severity="error">{message}</Alert>}
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box
@@ -52,7 +51,7 @@ const Login = () => {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Reset Password
+            Sign Up
           </Typography>
           <Box
             component="form"
@@ -70,7 +69,26 @@ const Login = () => {
               autoComplete="email"
               autoFocus
             />
-
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              name="password"
+              label="Password"
+              type="password"
+              id="password"
+              autoComplete="current-password"
+            />
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              name="confirm-password"
+              label="Confirm Password"
+              type="password"
+              id="confirm-password"
+              autoComplete="confirm-current-password"
+            />
             <Button
               type="submit"
               fullWidth
@@ -78,12 +96,12 @@ const Login = () => {
               sx={{ mt: 3, mb: 2 }}
               disabled={loading}
             >
-              Log In
+              Sign Up
             </Button>
             <Grid container>
               <Grid item>
-                <Link to="/signup" variant="body2">
-                  {"Don't have an account?"}
+                <Link to="/" variant="body2">
+                  {"Already have an account ?"}
                 </Link>
               </Grid>
             </Grid>
@@ -95,4 +113,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Signup;

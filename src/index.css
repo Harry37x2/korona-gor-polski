@@ -4,8 +4,13 @@
   font-weight: 400;
 
   color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
+  /* color: rgba(255, 255, 255, 0.87); */
   /* background-color: #242424; */
+
+    background-color: #001106;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1600 900'%3E%3Cpolygon fill='%23094100' points='957 450 539 900 1396 900'/%3E%3Cpolygon fill='%23147400' points='957 450 872.9 900 1396 900'/%3E%3Cpolygon fill='%23083c01' points='-60 900 398 662 816 900'/%3E%3Cpolygon fill='%23116f01' points='337 900 398 662 816 900'/%3E%3Cpolygon fill='%23083701' points='1203 546 1552 900 876 900'/%3E%3Cpolygon fill='%230e6902' points='1203 546 1552 900 1162 900'/%3E%3Cpolygon fill='%23083201' points='641 695 886 900 367 900'/%3E%3Cpolygon fill='%230b6402' points='587 900 641 695 886 900'/%3E%3Cpolygon fill='%23082d01' points='1710 900 1401 632 1096 900'/%3E%3Cpolygon fill='%23085e03' points='1710 900 1401 632 1365 900'/%3E%3Cpolygon fill='%23082800' points='1210 900 971 687 725 900'/%3E%3Cpolygon fill='%23065903' points='943 900 1210 900 971 687'/%3E%3C/svg%3E");
+    background-attachment: fixed;
+    background-size: cover;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -30,7 +35,7 @@ body {
   justify-content: center;
   /* min-width: 320px;
   min-height: 100vh; */
-  background-color: #1a1a1a;
+  /* background-color: #1a1a1a; */
 }
 
 

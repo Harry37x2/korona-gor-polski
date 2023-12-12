@@ -1,17 +1,16 @@
 import React, {useState} from 'react'
-import Header from './Header'
+import Header from '../components/Header'
 import { Button } from '@mui/material'
 
 import Box from "@mui/material/Box";
 
 
 import { Link } from "react-router-dom";
-import { useAuth } from "./contexts/AuthContext";
+import { useAuth } from "../contexts/AuthContext";
 
 
 const Welcome = () => {
-    const [error, setError] = useState("");
-    const { currentUser, logout } = useAuth();
+    const { currentUser, logout, error, setError } = useAuth();
     console.log(currentUser)
 
     async function handleLogout() {
@@ -35,7 +34,7 @@ const Welcome = () => {
             justifyContent: "center",
             gap: '2rem'
           }}>
-            <Link to="/profile">
+            <Link to="profile">
                 <Button
                 variant="contained"
                 sx={{width: '150px'}}
@@ -43,7 +42,7 @@ const Welcome = () => {
                 </Button>  
             </Link>
             
-            <Link to="/">
+            <Link to="">
             <Button
                 variant="contained"
                 sx={{width: '150px'}}
@@ -59,7 +58,7 @@ const Welcome = () => {
             justifyContent: "center",
             gap: '2rem'
           }}>
-            <Link to="/login">
+            <Link to="login">
                 <Button
                 variant="contained"
                 sx={{width: '150px'}}
@@ -67,7 +66,7 @@ const Welcome = () => {
                 </Button>  
             </Link>
             
-            <Link to="/signup">
+            <Link to="signup">
             <Button
                 variant="contained"
                 sx={{width: '150px'}}
