@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Button, ButtonGroup } from "@mui/material";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import moment from "moment";
 
 import PeaksCarts from "./PeaksCarts";
@@ -12,10 +12,10 @@ const KGPpeaks = () => {
   const dataCtx = useContext(DataContext)
   const peaksList = dataCtx.fetchedData
 
-  useEffect(()=>{
-    dataCtx.fetchData('korona-gor-polski')
-  },[])
-  console.log(dataCtx)
+  // useEffect(()=>{
+  //   dataCtx.fetchData('korona-gor-polski')
+  // },[])
+  // console.log(dataCtx)
 
   function dateChangeHandler(value) {
     setDate(value);

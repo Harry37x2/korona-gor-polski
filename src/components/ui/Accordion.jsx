@@ -1,23 +1,38 @@
-import React, { useState} from "react";
+import React, { useState, useContext, useEffect} from "react";
 import classes from "./Accordion.module.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate,  } from "react-router-dom";
+import { DataContext } from "../../contexts/DataContext";
 
 import { motion } from "framer-motion";
+const variants = {
+    open: {opacity:1 , y:0, transition: {duration:2}},
+    closed: {opacity: 0, y: '-10%'},    
+  }
 
-const Accordion = ({ name, link, desc, totalPeaksInChallenge }) => {
+const Accordion = ({ name, link, desc, totalPeaksInChallenge, collectionName }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const dataCtx = useContext(DataContext);  
+  const navigate = useNavigate()
   
-
   function accordionHandler() {
     setIsOpen((prev) => !prev);
   }
-
+  
   let css;
   if (isOpen) {
     css = classes.visible;
   } else {
     css = classes.hidden;
   }
+  
+  function forwardHandler() {
+    dataCtx.fetchData(collectionName)
+    console.log(link)
+    console.log(collectionName)
+    navigate('/peaks')
+  }
+
+  
 
   return (
     <motion.div
@@ -31,14 +46,14 @@ const Accordion = ({ name, link, desc, totalPeaksInChallenge }) => {
         <h3>Twój postęp: 0/{totalPeaksInChallenge}</h3>
         <div>
           <button onClick={accordionHandler}>info</button>
-          <button>
-            <Link to={`/${link}`}>szczyty</Link>
+          <button onClick={forwardHandler}>szczyty
+            {/* <Link to={`/${link}`}>szczyty</Link> */}
           </button>
         </div>
       </div>
-      <div className={css}>
+      <motion.div className={css} animate={isOpen ? 'open' : 'closed'} variants={variants}>
         <p>{desc}</p>
-      </div>
+      </motion.div>
     </motion.div>
   );
 };
