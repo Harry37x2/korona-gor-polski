@@ -1,0 +1,11 @@
+.parameters {
+    /* background-color:  gray; */
+    width: 6rem;
+    text-align: center;
+    padding: .2rem;
+    border: 1px solid #147400;
+}
+
+p {
+    margin: 0;
+}

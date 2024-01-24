@@ -4,7 +4,6 @@ import { useCollectionData } from "react-firebase-hooks/firestore";
 import { db } from "../firebase";
 import { useAuth } from "../contexts/AuthContext";
 import Card from "../components/ui/Card";
-import { Link } from "react-router-dom";
 
 import { motion } from "framer-motion";
 

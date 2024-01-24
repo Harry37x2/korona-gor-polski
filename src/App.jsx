@@ -16,6 +16,7 @@ import Grid from "@mui/material/Unstable_Grid2";
 import PeakDetails from "./pages/PeakDetails";
 import ErrorElement from "./pages/ErrorElement";
 
+
 function App() {
   const theme = createTheme({
     palette: {

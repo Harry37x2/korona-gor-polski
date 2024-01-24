@@ -1,55 +1,67 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
 
-import { query, collection, onSnapshot } from "@firebase/firestore";
+import { query, where, collection, onSnapshot } from "@firebase/firestore";
 import { db } from "../firebase";
 
 import { useAuth } from "../contexts/AuthContext";
 
-import {
-  updateDoc,
-  doc,
-  setDoc,
-} from "@firebase/firestore";
+import { updateDoc, doc, setDoc } from "@firebase/firestore";
+import moment from "moment";
 
 export const DataContext = React.createContext();
 export function useData() {
   return useContext(DataContext);
 }
 
-export function DataProvider({ children, x = "korona-gor-polski" }) {
-  
+export function DataProvider({ children, tag }) {
   const [fetchedData, setFetchedData] = useState([]);
   const [fetchError, setFetchError] = useState();
-  const [isLoading, setIsLoading] = useState();  
+  const [isLoading, setIsLoading] = useState();
   const { currentUser } = useAuth();
-  const fetchData = useCallback( function fetchData(x) {
-    setIsLoading(true)
+  const [date, setDate] = useState(moment());
+  
+  const fetchData = useCallback(function fetchData(tag) {
+    setIsLoading(true);    
     try {
-      const q = query(collection(db, x));
-      console.log(x)
-      // const q = query(collection(db, "korona-gor-polski"));
-      const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      if(tag === 'kgp' || tag === 'diadem'){
+        const q = query(collection(db, "korona-gor-polski"), where("inChallenges", "array-contains", tag));
+        const unsubscribe = onSnapshot(q, (querySnapshot) => {
         let listItems = [];
-        querySnapshot.forEach((peak) => {
+        querySnapshot.forEach((peak) => {          
           listItems.push({ ...peak.data(), id: peak.id });
+          // console.log(peak.data().inChallenges.includes('kgp'))   
         });
-          setFetchedData(listItems);
-          setFetchError(null);
+        setFetchedData(listItems);
+        setFetchError(null);     
       });
       return () => unsubscribe();
-    } catch (err) {
+      } else {
+        const q = query(collection(db, "korona-gor-polski"), where("inChallenges", "array-contains-any", ['kgp', 'diadem']));
+        const unsubscribe = onSnapshot(q, (querySnapshot) => {
+          let listItems = [];
+          querySnapshot.forEach((peak) => {          
+            listItems.push({ ...peak.data(), id: peak.id });
+            // console.log(peak.data().inChallenges.includes('kgp'))   
+          });
+          setFetchedData(listItems);
+          setFetchError(null);     
+        });
+        return () => unsubscribe();
+      }
+    } 
+    catch (err) {
       setFetchError(err.message);
     } finally {
-        setIsLoading(false);
+      setIsLoading(false);
     }
-  },[])
+  }, []);
 
   useEffect(() => {
-    fetchData(x);
+    fetchData(tag);
   }, []);
 
   const handleSubmit = async (id) => {
-    const submitedList = peaksList.map((item) =>
+    const submitedList = fetchedData.map((item) =>
       item.id === id
         ? { ...item, visited: true, date: date.format("D/MM/YYYY, H:mm") }
         : item
@@ -67,7 +79,7 @@ export function DataProvider({ children, x = "korona-gor-polski" }) {
   };
 
   const handleCheck = async (value, id) => {
-    const submitedList = peaksList.map((item) =>
+    const submitedList = fetchedData.map((item) =>
       item.id === id ? { ...item, [value]: !item[value] } : item
     );
     setFetchedData(submitedList);
@@ -91,6 +103,8 @@ export function DataProvider({ children, x = "korona-gor-polski" }) {
     setIsLoading,
     handleCheck,
     handleSubmit,
+    date,
+    setDate
   };
 
   return (

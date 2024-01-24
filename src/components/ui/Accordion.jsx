@@ -9,7 +9,7 @@ const variants = {
     closed: {opacity: 0, y: '-10%'},    
   }
 
-const Accordion = ({ name, link, desc, totalPeaksInChallenge, collectionName }) => {
+const Accordion = ({ name, tag, link, desc, totalPeaksInChallenge, collectionName }) => {
   const [isOpen, setIsOpen] = useState(false);
   const dataCtx = useContext(DataContext);  
   const navigate = useNavigate()
@@ -26,9 +26,7 @@ const Accordion = ({ name, link, desc, totalPeaksInChallenge, collectionName }) 
   }
   
   function forwardHandler() {
-    dataCtx.fetchData(collectionName)
-    console.log(link)
-    console.log(collectionName)
+    dataCtx.fetchData(tag)
     navigate('/peaks')
   }
 

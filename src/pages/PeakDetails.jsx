@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
-import Card from "../components/ui/Card";
 import { useParams } from "react-router";
+import Details from "../components/ui/Details";
 
 import { Link } from "react-router-dom";
 import { DataContext } from "../contexts/DataContext";
@@ -13,6 +13,7 @@ const PeakDetails = () => {
   const filteredPeak = dataCtx.fetchedData.filter((peak) => peak.id === peakId);
 
   return (
+    <>
     <div>
       <ButtonGroup
         variant="contained"
@@ -25,12 +26,9 @@ const PeakDetails = () => {
           <Button sx={{ m: 1 }}>Konto</Button>
         </Link>
       </ButtonGroup>
-
-      <div>
-        {peakId}
-        <p>{filteredPeak[0]?.name}</p>
-      </div>
     </div>
+      <Details id={peakId} peak={filteredPeak[0]}/>
+    </>
   );
 };
 
